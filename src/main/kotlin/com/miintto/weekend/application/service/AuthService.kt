@@ -1,7 +1,8 @@
 package com.miintto.weekend.application.service
 
-import com.miintto.weekend.application.command.RegisterUserCommand
-import com.miintto.weekend.application.port.`in`.RegisterUserUseCase
+import com.miintto.weekend.application.command.LoginUserCommand
+import com.miintto.weekend.application.command.SignUpUserCommand
+import com.miintto.weekend.application.port.`in`.AuthUseCase
 import com.miintto.weekend.application.port.out.UserRepositoryPort
 import com.miintto.weekend.domain.User
 import com.miintto.weekend.global.exception.ApiException
@@ -13,8 +14,8 @@ import org.springframework.stereotype.Service
 class AuthService(
     private val userRepositoryPort: UserRepositoryPort,
     private val passwordEncoder: BCryptPasswordEncoder,
-) : RegisterUserUseCase {
-    override fun registerUser(command: RegisterUserCommand): String {
+) : AuthUseCase {
+    override fun signUpUser(command: SignUpUserCommand): String {
         if (command.password != command.passwordCheck) {
             throw ApiException(Http4xx.PASSWORD_MISMATCHED)
         } else if (userRepositoryPort.findByEmail(command.email) != null) {
@@ -26,6 +27,14 @@ class AuthService(
             password = passwordEncoder.encode(command.password),
         )
         userRepositoryPort.save(user)
+        return "authToken" // TODO( JWT 토큰 구현 )
+    }
+
+    override fun loginUser(command: LoginUserCommand): String {
+        val user = userRepositoryPort.findByEmail(command.email) ?: throw ApiException(Http4xx.AUTHENTICATION_FAILED)
+        if (!passwordEncoder.matches(command.password, user.password)) {
+            throw ApiException(Http4xx.AUTHENTICATION_FAILED)
+        }
         return "authToken" // TODO( JWT 토큰 구현 )
     }
 }

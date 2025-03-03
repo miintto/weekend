@@ -1,7 +1,8 @@
 package com.miintto.weekend.adaptor.`in`.web
 
-import com.miintto.weekend.adaptor.`in`.web.dto.RegisterUserRequest
-import com.miintto.weekend.application.port.`in`.RegisterUserUseCase
+import com.miintto.weekend.adaptor.`in`.web.dto.LoginUserRequest
+import com.miintto.weekend.adaptor.`in`.web.dto.SignUpUserRequest
+import com.miintto.weekend.application.port.`in`.AuthUseCase
 import com.miintto.weekend.global.response.ApiResponse
 import com.miintto.weekend.global.response.http.Http2xx
 import org.springframework.web.bind.annotation.PostMapping
@@ -12,13 +13,21 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/auth")
 class AuthController(
-    private val registerUseCase: RegisterUserUseCase,
+    private val authUseCase: AuthUseCase,
 ) {
-    @PostMapping("/register")
-    fun register(
+    @PostMapping("/signup")
+    fun signUp(
         @RequestBody
-        request: RegisterUserRequest,
+        request: SignUpUserRequest,
     ): ApiResponse {
-        return ApiResponse(Http2xx.SUCCESS, registerUseCase.registerUser(request.toCommand()))
+        return ApiResponse(Http2xx.CREATED, authUseCase.signUpUser(request.toCommand()))
+    }
+
+    @PostMapping("/login")
+    fun login(
+        @RequestBody
+        request: LoginUserRequest,
+    ): ApiResponse {
+        return ApiResponse(Http2xx.OK, authUseCase.loginUser(request.toCommand()))
     }
 }

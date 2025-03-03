@@ -7,6 +7,6 @@ enum class Http2xx(
     override val message: String,
     override val status: HttpStatus,
 ) : BaseHttp {
-    SUCCESS("S000", "성공", HttpStatus.OK),
+    OK("S000", "성공", HttpStatus.OK),
     CREATED("S001", "생성 완료", HttpStatus.CREATED),
 }
