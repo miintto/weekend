@@ -1,5 +1,6 @@
 package com.miintto.weekend.application.service
 
+import com.miintto.weekend.application.command.EmailCheckCommand
 import com.miintto.weekend.application.command.LoginUserCommand
 import com.miintto.weekend.application.command.SignUpUserCommand
 import com.miintto.weekend.application.port.`in`.AuthUseCase
@@ -15,6 +16,12 @@ class AuthService(
     private val userRepositoryPort: UserRepositoryPort,
     private val passwordEncoder: BCryptPasswordEncoder,
 ) : AuthUseCase {
+    override fun checkEmail(command: EmailCheckCommand) {
+        if (userRepositoryPort.findByEmail(command.email) != null) {
+            throw ApiException(Http4xx.DUPLICATED_EMAIL)
+        }
+    }
+
     override fun signUpUser(command: SignUpUserCommand): String {
         if (command.password != command.passwordCheck) {
             throw ApiException(Http4xx.PASSWORD_MISMATCHED)

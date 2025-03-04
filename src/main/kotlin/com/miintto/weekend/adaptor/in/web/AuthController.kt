@@ -1,5 +1,6 @@
 package com.miintto.weekend.adaptor.`in`.web
 
+import com.miintto.weekend.adaptor.`in`.web.dto.EmailCheckRequest
 import com.miintto.weekend.adaptor.`in`.web.dto.LoginUserRequest
 import com.miintto.weekend.adaptor.`in`.web.dto.SignUpUserRequest
 import com.miintto.weekend.application.port.`in`.AuthUseCase
@@ -15,6 +16,14 @@ import org.springframework.web.bind.annotation.RestController
 class AuthController(
     private val authUseCase: AuthUseCase,
 ) {
+    @PostMapping("/email/check")
+    fun checkEmail(
+        @RequestBody
+        request: EmailCheckRequest,
+    ): ApiResponse {
+        return ApiResponse(Http2xx.OK, authUseCase.checkEmail(request.toCommand()))
+    }
+
     @PostMapping("/signup")
     fun signUp(
         @RequestBody
