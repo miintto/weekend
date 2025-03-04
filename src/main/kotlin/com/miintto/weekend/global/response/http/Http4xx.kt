@@ -14,4 +14,5 @@ enum class Http4xx(
     DUPLICATED_EMAIL("F004", "이미 사용중인 이메일입니다.", HttpStatus.UNPROCESSABLE_ENTITY),
     PASSWORD_MISMATCHED("F005", "패스워드가 서로 일치하지 않습니다.", HttpStatus.UNPROCESSABLE_ENTITY),
     AUTHENTICATION_FAILED("F006", "이메일 혹은 비밀번호가 일치하지 않습니다.", HttpStatus.UNPROCESSABLE_ENTITY),
+    BAND_NOT_FOUND("F007", "밴드를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
 }

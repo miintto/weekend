@@ -14,12 +14,12 @@ import org.springframework.stereotype.Service
 
 @Service
 class AuthService(
-    private val userRepositoryPort: UserRepositoryPort,
+    private val userRepository: UserRepositoryPort,
     private val passwordEncoder: BCryptPasswordEncoder,
-    private val jwtTokenProvider: JwtTokenProvider
+    private val jwtTokenProvider: JwtTokenProvider,
 ) : AuthUseCase {
     override fun checkEmail(command: EmailCheckCommand) {
-        if (userRepositoryPort.findByEmail(command.email) != null) {
+        if (userRepository.findByEmail(command.email) != null) {
             throw ApiException(Http4xx.DUPLICATED_EMAIL)
         }
     }
@@ -27,7 +27,7 @@ class AuthService(
     override fun signUpUser(command: SignUpUserCommand): String {
         if (command.password != command.passwordCheck) {
             throw ApiException(Http4xx.PASSWORD_MISMATCHED)
-        } else if (userRepositoryPort.findByEmail(command.email) != null) {
+        } else if (userRepository.findByEmail(command.email) != null) {
             throw ApiException(Http4xx.DUPLICATED_EMAIL)
         }
         val user = User(
@@ -35,12 +35,12 @@ class AuthService(
             email = command.email,
             password = passwordEncoder.encode(command.password),
         )
-        userRepositoryPort.save(user)
+        userRepository.save(user)
         return jwtTokenProvider.generateAccessToken(user.id, user.email)
     }
 
     override fun loginUser(command: LoginUserCommand): String {
-        val user = userRepositoryPort.findByEmail(command.email) ?: throw ApiException(Http4xx.AUTHENTICATION_FAILED)
+        val user = userRepository.findByEmail(command.email) ?: throw ApiException(Http4xx.AUTHENTICATION_FAILED)
         if (!passwordEncoder.matches(command.password, user.password)) {
             throw ApiException(Http4xx.AUTHENTICATION_FAILED)
         }
