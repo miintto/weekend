@@ -18,4 +18,6 @@ interface BandUserJpaRepository : JpaRepository<BandUserEntity, Long> {
         @Param("userId")
         userId: Long,
     ): List<BandEntity>
+
+    fun findByBandIdAndUserId(bandId: Long, userId: Long): BandUserEntity?
 }

@@ -17,4 +17,5 @@ enum class Http4xx(
     BAND_NOT_FOUND("F007", "밴드를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
     SONG_NOT_FOUND("F008", "곡를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
     USER_NOT_FOUND("F009", "사용자를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
+    BAND_NOT_REGISTERED("F010", "가입하지 않는 밴드입니다.", HttpStatus.UNPROCESSABLE_ENTITY),
 }

@@ -7,4 +7,6 @@ interface BandUserRepositoryPort {
     fun save(bandUser: BandUser): BandUser
 
     fun findUserBand(userId: Long): List<Band>
+
+    fun exists(bandId: Long, userId: Long): Boolean
 }

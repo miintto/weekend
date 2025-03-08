@@ -18,4 +18,8 @@ class BandUserPersistenceAdapter(
     override fun findUserBand(userId: Long): List<Band> {
         return bandUserJpaRepository.findBandsByUserId(userId).map { it.toDomain() }
     }
+
+    override fun exists(bandId: Long, userId: Long): Boolean {
+        return bandUserJpaRepository.findByBandIdAndUserId(bandId, userId) != null
+    }
 }
