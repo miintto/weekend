@@ -15,4 +15,6 @@ enum class Http4xx(
     PASSWORD_MISMATCHED("F005", "패스워드가 서로 일치하지 않습니다.", HttpStatus.UNPROCESSABLE_ENTITY),
     AUTHENTICATION_FAILED("F006", "이메일 혹은 비밀번호가 일치하지 않습니다.", HttpStatus.UNPROCESSABLE_ENTITY),
     BAND_NOT_FOUND("F007", "밴드를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
+    SONG_NOT_FOUND("F008", "곡를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
+    USER_NOT_FOUND("F009", "사용자를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
 }
