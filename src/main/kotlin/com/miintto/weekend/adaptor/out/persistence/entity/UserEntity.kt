@@ -22,7 +22,17 @@ data class UserEntity(
     val updatedDtm: LocalDateTime? = null,
     val createdDtm: LocalDateTime = LocalDateTime.now(),
 ) {
-    fun toDomain() = User(id = id, name = name, email = email, password = hashedPassword)
+    fun toDomain(): User
+        = User(
+            id = id,
+            name = name,
+            email = email,
+            password = hashedPassword,
+            isActive = isActive,
+            isAdmin = isAdmin,
+            updatedDtm = updatedDtm,
+            createdDtm = createdDtm,
+        )
 
     companion object {
         fun fromDomain(user: User): UserEntity
@@ -31,6 +41,10 @@ data class UserEntity(
                 name = user.name,
                 email = user.email,
                 hashedPassword = user.password,
+                isActive = user.isActive,
+                isAdmin = user.isAdmin,
+                updatedDtm = user.updatedDtm,
+                createdDtm = user.createdDtm,
             )
     }
 }

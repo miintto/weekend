@@ -6,7 +6,6 @@ import com.miintto.weekend.application.command.SignUpUserCommand
 import com.miintto.weekend.application.port.`in`.AuthUseCase
 import com.miintto.weekend.application.port.out.UserRepositoryPort
 import com.miintto.weekend.config.security.JwtTokenProvider
-import com.miintto.weekend.domain.User
 import com.miintto.weekend.global.exception.ApiException
 import com.miintto.weekend.global.response.http.Http4xx
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
@@ -30,12 +29,7 @@ class AuthService(
         } else if (userRepository.findByEmail(command.email) != null) {
             throw ApiException(Http4xx.DUPLICATED_EMAIL)
         }
-        val user = User(
-            name = command.name,
-            email = command.email,
-            password = passwordEncoder.encode(command.password),
-        )
-        userRepository.save(user)
+        val user = userRepository.save(command.toDomain())
         return jwtTokenProvider.generateAccessToken(user.id, user.email)
     }
 
