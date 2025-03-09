@@ -7,7 +7,7 @@ import com.miintto.weekend.application.port.`in`.BandUseCase
 import com.miintto.weekend.application.port.`in`.SongUseCase
 import com.miintto.weekend.global.response.ApiResponse
 import com.miintto.weekend.global.response.http.Http2xx
-import org.springframework.security.core.Authentication
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -26,12 +26,12 @@ class BandController(
     fun createBand(
         @RequestBody
         request: BandCreateRequest,
-        authentication: Authentication,
+        @AuthenticationPrincipal
+        userDetails: UserDetails,
     ): ApiResponse {
-        val userDetail = authentication.principal as UserDetails
         return ApiResponse(
             Http2xx.CREATED,
-            BandResponse.fromDomain(bandUseCase.createBand(request.toCommand(), userDetail.username.toLong())),
+            BandResponse.fromDomain(bandUseCase.createBand(request.toCommand(), userDetails.username.toLong())),
         )
     }
 

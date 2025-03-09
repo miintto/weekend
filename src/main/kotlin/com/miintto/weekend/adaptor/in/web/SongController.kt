@@ -5,7 +5,7 @@ import com.miintto.weekend.adaptor.`in`.web.dto.SongResponse
 import com.miintto.weekend.application.port.`in`.SongUseCase
 import com.miintto.weekend.global.response.ApiResponse
 import com.miintto.weekend.global.response.http.Http2xx
-import org.springframework.security.core.Authentication
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -23,12 +23,12 @@ class SongController(
     fun createSong(
         @RequestBody
         request: SongCreateRequest,
-        authentication: Authentication,
+        @AuthenticationPrincipal
+        userDetails: UserDetails,
     ): ApiResponse {
-        val userDetail = authentication.principal as UserDetails
         return ApiResponse(
             Http2xx.CREATED,
-            SongResponse.fromDomain(songUseCase.createSong(request.toCommand(), userDetail.username.toLong())),
+            SongResponse.fromDomain(songUseCase.createSong(request.toCommand(), userDetails.username.toLong())),
         )
     }
 
